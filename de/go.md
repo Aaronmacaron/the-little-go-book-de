@@ -71,4 +71,101 @@ Um die Variabeln zu aktivieren, kann man entweder die Kommandozeile neustarten o
 
 Geben Sie `go version` ein, was hoffentlich in einer ähnlichen Anzeige wie dieser resultiert: `go version go1.3.3.3 darwin/amd64`
 
+## Windows
+
 Laden sie sich die neuste ZIP-Datei herunter. Wenn sie auf einem x64 System arbeiten, brauchen Sie die Datei `go#.#.#.windows-amd64.zip`, wobei `#.#.#` der neusten Go-Version entspricht.
+
+Entpacken sie die ZIP-Datei in einen Ordner Ihrer Wahl. Mit `c:\Go` ist man gut beraten.
+
+Setzen Sie zwei Umgebungsvariabeln:
+
+1. `GOPATH` zeigt auf Ihren Workspace. Der Wert dieser Umgebungsvariable könnte zum Beispiel `c:\users\goku\work\go` sein.
+2. Fügen Sie `c:\Go\bin` zu Ihrer `PATH` Umgebungsvariable hinzu.
+
+Umgebungsvariablen können gesetzt werden, indem man den `Umgebungsvariabeln`-Knopf in der `Erweitert` Schaltfläche des `System` Menupunktes in der Systemsteuerung drückt. Gewisse Versionen von Windows bieten diese Einstellung die `Erweiterte Systemeinstellungen` Option des `System` Menupunktes in der Systemsteuerung.
+
+Öffnen Sie eine Kommandozeile und geben Sie `go version` ein. Jetzt sehen Sie hoffentlich in der Ausgabe etwas ähnliches wie das: `go version go1.3.3 windows/amd64`.
+
+# Kapitel 1 - Die Basics
+
+Go ist eine kompilierte und statisch-typisierte Programmiersprache mit ein C-ähnlichen Syntax und mit Garbage Collection. Was bedeuted das?
+
+## Kompilierung
+
+Die Kompilierung ist der Prozess des Übersetzens des Sourcecodes in eine tiefere Sprache - entweder Assembly (wie bei Go), oder in eine Zwischensprache (wie bei Java und C#).
+
+Kompilierte sprachen können mühsam sein, da die Kompilierung langsam sein kann. Es ist schwierig Änderungen auszuprobieren, wenn man bei jeder Kompilierung Minuten oder gar Stunden warten muss. Die Kompilierungsgeschwindigkeit ist eines der Hauptziele von Go. Das ist eine gute Nachricht für Leute, die an einem grossen Projekt arbeiten oder auch für diejenigen, die es gewöhnt sind mit einem schnellen Feedback-Zyklus zu arbeiten, so wie man es von interpretierten Sprachen kennt.
+
+Kompilierte Sprachen neigen dazu etwas schneller zu laufen und funktionieren ohne zusätzliche Abhängigkeiten (zumindest bei Sprachen wie C, C++ oder Go, die direkt zu Assembly kompilieren).
+
+## Statische Typisierung
+
+Wenn eine Sprache statisch typisiert ist, bedeutet das, dass Variablen von einem bestimmten Typ sein müssen (int, string, bool, []byte, etc.). Dies wird entweder durch die Angabe des Typs bei der Deklaration der Variable erreicht oder in vielen Fällen durch Ableitung des Typs durch den Compiler (wir werden uns in Kürze Beispiele ansehen).
+
+Es gibt noch viel mehr, was man über statische Typisierung sagen kann, aber ich glaube, statische Typisierung ist etwas, das man besser versteht, wenn man sich Code ansieht. Wenn Sie es gewohnt sind, dynamisch typisierte Sprachen zu verwenden, kann es sein, dass Sie statische Typisierung etwas umständlich finden. Damit liegen Sie nicht falsch, aber es gibt Vorteile, besonders wenn man statische Typisierung mit Kompilierung verbindet. Die beiden sind oft verschmolzen. Es ist wahr, dass, wenn man das eine hat, normalerweise auch das andere hat, aber das ist keine harte Regel. Mit einem statischen Typsystem ist ein Compiler in der Lage, Probleme über syntaktische Fehler hinaus zu erkennen und weiter zu optimieren.
+
+Wenn eine Programmiersprache eine C-ähnliche Syntax hat, bedeutet das, dass wenn Sie an andere C-ähnliche Sprachen wie C, C++, Java, JavaScript und C# gewöhnt sind, dann Ihnen auch diese Sprache bekannt vorkommen wird - zumindest oberflächlich. Es bedeutet zum Beispiel, dass `&&` als boolesches UND verwendet wird, `==` zum Vergleich der Gleichheit verwendet wird, `{` und `}` einen Scope starten und beenden, und Array-Indizes bei null beginnen.
+
+C-ähnliche Syntax bedeutet auch, Semikolons beenden eine Zeile und Klammern finden sich um Bedingungen. Go macht Schluss mit beidem, obwohl Klammern immer noch verwendet werden, um Priorität zu kontrollieren. Zum Beispiel sieht eine `if`-Anweisung so aus:
+
+```go
+if name == "Leto" {
+  print("the spice must flow")
+}
+```
+
+In etwas komplizierteren Fällen sind Klammern immer noch nützlich:
+
+```go
+if (name == "Goku" && power > 9000) || (name == "gohan" && power < 4000)  {
+  print("super Saiyan")
+}
+```
+
+Abgesehen davon ist Go viel näher an C als C# oder Java - nicht nur in Bezug auf die Syntax, sondern auch in Bezug auf den Zweck. Das spiegelt sich in der Knappheit und Einfachheit der Sprache wider, die hoffentlich offensichtlich wird, wenn man sie lernt.
+
+## Garbage Collection
+
+Einige Variablen, wenn sie erstellt werden, haben eine leicht zu definierende Lebensdauer. Eine Variable, die sich lokal zu einer Funktion befindet, verschwindet beispielsweise, wenn die Funktion beendet wird. In anderen Fällen ist es nicht so offensichtlich - zumindest für einen Compiler. Beispielsweise kann die Lebensdauer einer Variablen, die von einer Funktion zurückgegeben oder von anderen Variablen und Objekten referenziert wird, schwierig zu bestimmen sein. Ohne Garbage Collection liegt es an den Entwicklern, den mit solchen Variablen verbundenen Speicher an einem Punkt wieder freizugeben, an dem der Entwickler weiß, dass die Variable nicht benötigt wird. Wie? In C würden Sie die Variable mittls `free(str);` wieder freigeben.
+
+Sprachen mit Garbage Collection (z.B. Ruby, Python, Java, JavaScript, C#, Go) können Variabeln im Augen behalten und schliesslich freigeben, wenn sie nicht mehr verwendet werden. Die Garbage Collection bringt Mehraufwand, beseitigt aber auch eine Reihe von verheerenden Bugs.
+
+## Go-Code ausführen
+
+Lassen sie uns für den Anfang ein einfaches Programm erstellen um zu lernen, wie man es Kompilieren und Ausführen kann. Öffnen Sie ihren Lieblingseditor und geben Sie folgenden Code ein:
+
+```go
+package main
+
+func main() {
+  println("it's over 9000!")
+}
+```
+
+Speichern Sie die Datei als `main.go`. Momentan ist es noch egal wo Sie die Datei Speichern. Wir brauchen die Datei nicht im Go-Workspace für solche trivialen Beispiele.
+
+Als nächstes, öffnen Sie die Kommandozeile und wechseln Sie zum Verzeichnis, wo Sie die Datei gespeichert haben. Bei mir resultiert das im Kommando `cd ~/code`.
+
+Schliesslich können Sie das Programam ausführen, indem Sie folgendes eingeben: 
+
+```
+go run main.go
+```
+
+Wenn alles funktioniert hat, sollten Sie die Ausgabe *it's over 9000!* sehen.
+
+Einen Moment, was ist mit dem Kompilierungsschritt? `go run` ist ein praktisches Kommando, welches das Programm Kompiliert und sogleich ausführt. Das Kommando nutzt ein temporäres Verzeichnis um das Programm zu kompilieren und anschliessend auszuführen. Danach wird das temporäre Verzeichnis bereinigt. Das temporäre Verzeichnis wird sichtbar, wenn man folgendes Kommando ausführt.
+
+```
+go run --work main.go
+```
+
+Um explizit Code zu kompilieren, brauchen Sie `go build`:
+
+```
+go build main.go
+```
+
+Dieses Kommando generiert eine ausführbare Datei namens `main`, welche Sie ausführen können. Auf Linux und OSX ist zu beachten, dass die `./`-Prefix benötigt ist. Geben Sie also `./main` ein.
+
+Während der Entwicklung können Sie entweder `go run` oder `go build` verwenden. Wenn Sie Ihren Code jedoch ausliefern, ist es zu empfehlen, ein Binary über `go build` zu bereitstellen.
